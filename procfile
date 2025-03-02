@@ -1,1 +1,1 @@
-web: gunicorn QBEEP.wsgi
+web: gunicorn qbeep.wsgi
