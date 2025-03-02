@@ -1,1 +1,1 @@
-web: gunicorn QBEEP.wsgi --logfile -
+web: gunicorn QBEEP.wsgi --log-file -
