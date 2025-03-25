@@ -151,5 +151,7 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True  # 允許發送 Cookies
 MIDDLEWARE.remove("django.middleware.csrf.CsrfViewMiddleware")
 
-CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False  # 確保 JavaScript 可以讀取 CSRF Token
+CSRF_COOKIE_SECURE = False  # 本機測試應該設 False，正式環境設 True
+SESSION_COOKIE_SECURE = False  # 同上

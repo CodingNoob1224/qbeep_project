@@ -52,7 +52,7 @@
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": "{{ csrf_token }}"
+                "X-CSRFToken": csrf_token
             },
             body: JSON.stringify({
                 num_winners: numWinners,
