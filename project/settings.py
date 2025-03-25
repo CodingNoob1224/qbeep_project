@@ -145,3 +145,5 @@ CORS_ALLOWED_ORIGINS = [
     # 修改為你的前端域名
 ]
 
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
