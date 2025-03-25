@@ -1,15 +1,15 @@
 <!-- templates/registration/logout.html -->
-{% extends 'base.html' %}  <!-- 繼承基礎模板 -->
+{% extends 'base.html' %}
 
-{% block title %}登出成功{% endblock %}  <!-- 設定標題 -->
+{% block title %}登出成功{% endblock %}
 
-{% block content %}  <!-- 定義內容區塊 -->
+{% block content %}
     <h1>登出成功</h1>
-    <p>您已成功登出！</p>
-    <p>將在幾秒鐘後自動重定向到登入頁面。</p>
-    <script>
-        setTimeout(function() {
-            window.location.href = "{% url 'login' %}";  // 重定向到登入頁面
-        }, 3000);  // 3秒後重定向
-    </script>
+    <p>您已成功登出！將會自動重定向到登入頁面。</p>
+
+    <!-- 使用 POST 請求登出 -->
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">登出</button>
+    </form>
 {% endblock %}

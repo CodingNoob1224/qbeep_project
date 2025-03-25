@@ -5,7 +5,7 @@ from .views import register
 urlpatterns = [
     path("register/", register, name="register"),
     path('login/', views.CustomLoginView.as_view(), name='login'),
-    path('logout/', views.CustomLogoutView.as_view(), name='logout'),
+    path('logout/', views.CustomLogoutView.as_view(), name='logout'), 
     path('profile/', views.profile, name='profile'),
     path('password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
