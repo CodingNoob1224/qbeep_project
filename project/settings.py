@@ -145,5 +145,5 @@ CORS_ALLOWED_ORIGINS = [
     # 修改為你的前端域名
 ]
 
-CSRF_COOKIE_SECURE = False
-CSRF_COOKIE_HTTPONLY = False
+CORS_ALLOW_CREDENTIALS = True  # 允許發送 Cookies
+MIDDLEWARE.remove("django.middleware.csrf.CsrfViewMiddleware")
