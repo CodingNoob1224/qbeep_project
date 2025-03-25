@@ -1,16 +1,14 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import login, get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from events.models import Registration, Event
 from django.contrib.auth.decorators import login_required
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-from member.forms import EventForm
+from events.models import Registration, Event
+from .forms import EventForm
 from .models import UserProfile
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -22,28 +20,19 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('event_list')
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import UserRegistrationForm
 
-# def register(request):
-#     if request.method == "POST":
-#         form = UserRegistrationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request, user)  # 註冊後自動登入
-#             return redirect("event_list")  # 註冊成功後跳轉到活動列表
-#     else:
-#         form = UserRegistrationForm()
-
-#     return render(request, "registration/register.html", {"form": form})
-
+# 註冊視圖，註冊後自動登入並跳轉到活動列表
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            user = form.save()
+            try:
+                login(request, user)  # 註冊後自動登入
+            except Exception as e:
+                # 捕獲錯誤並顯示錯誤信息
+                return render(request, 'registration/register.html', {'form': form, 'error': '登入失敗: ' + str(e)})
+            return redirect('event_list')  # 註冊後跳轉到活動列表
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
@@ -53,7 +42,7 @@ def profile(request):
     user = request.user
     registrations = Registration.objects.filter(user=user).select_related('event')
 
-    # 确保 UserProfile 存在
+    # 確保 UserProfile 存在
     try:
         profile = user.userprofile
     except UserProfile.DoesNotExist:
@@ -68,29 +57,29 @@ def profile(request):
             'qr_code': profile.qr_code.url if profile and profile.qr_code else None,
         })
 
-# 管理员仪表板视图
+# 管理員儀表板視圖
 @login_required
 def admin_dashboard(request):
-    events = Event.objects.all()  # 获取所有事件
-    registrations = Registration.objects.all()  # 获取所有注册
+    events = Event.objects.all()  # 獲取所有事件
+    registrations = Registration.objects.all()  # 獲取所有註冊
     return render(request, 'member/admin_dashboard.html', {
         'events': events,
         'registrations': registrations
     })
 
-# 创建事件视图
+# 創建事件視圖
 @login_required
 def create_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('admin_dashboard')  # 创建事件后跳转到管理员仪表板
+            return redirect('admin_dashboard')  # 創建事件後跳轉到管理員儀表板
     else:
         form = EventForm()
     return render(request, 'member/create_event.html', {'form': form})
 
-# 信号处理器：自动创建 UserProfile
+# 信號處理器：自動創建 UserProfile
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -101,14 +90,10 @@ def save_user_profile(sender, instance, **kwargs):
     if hasattr(instance, 'userprofile'):
         instance.userprofile.save()
 
-# member/views.py
+# 簽到功能視圖
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-
-# 修正模型導入
-from events.models import Event  # 移至正確的應用
-from .models import UserProfile
 
 @csrf_exempt
 def check_in_user(request, event_id):
@@ -142,18 +127,3 @@ def check_in_user(request, event_id):
             return JsonResponse({"success": False, "message": "發生錯誤，請稍後再試"})
 
     return JsonResponse({"success": False, "message": "僅接受 POST 請求"})
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import CustomUserCreationForm
-
-def register(request):
-    if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # 註冊後自動登入
-            return redirect("event_list")  # 成功後跳轉到活動列表
-    else:
-        form = CustomUserCreationForm()
-
-    return render(request, "registration/register.html", {"form": form})
