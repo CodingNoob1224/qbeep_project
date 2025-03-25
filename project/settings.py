@@ -140,7 +140,7 @@ INSTALLED_APPS += [
 MIDDLEWARE.insert(0, "corsheaders.middleware.CorsMiddleware")
 
 CORS_ALLOWED_ORIGINS = [
-    "qbeepprojectv1test.zeabur.app",
+    "https://qbeepprojectv1test.zeabur.app",
     "https://project11301.pythonanywhere.com", 
     # 修改為你的前端域名
 ]
