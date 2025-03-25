@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-bnpk&8ac@96l5yi@-7(@nsv^iu_*$f+gxrco9_qdhlhk(2y6ns
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://qbeep-d332eb2a9e03.herokuapp.com/']
+ALLOWED_HOSTS = ['qbeepprojectv1test.zeabur.app']
 
 
 # Application definition
@@ -140,7 +140,8 @@ INSTALLED_APPS += [
 MIDDLEWARE.insert(0, "corsheaders.middleware.CorsMiddleware")
 
 CORS_ALLOWED_ORIGINS = [
-    "https://project11301.pythonanywhere.com",  # 修改為你的前端域名
-    "https://你的域名.com",
+    "qbeepprojectv1test.zeabur.app",
+    "https://project11301.pythonanywhere.com", 
+    # 修改為你的前端域名
 ]
 
