@@ -144,6 +144,12 @@ CORS_ALLOWED_ORIGINS = [
     "https://project11301.pythonanywhere.com", 
     # 修改為你的前端域名
 ]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://qbeepprojectv1test.zeabur.app",
+    "https://project11301.pythonanywhere.com"
+]
 CORS_ALLOW_CREDENTIALS = True  # 允許發送 Cookies
 MIDDLEWARE.remove("django.middleware.csrf.CsrfViewMiddleware")
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
